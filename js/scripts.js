@@ -1,9 +1,11 @@
 const items = document.getElementById('items');
+const categorias = document.getElementById('categorias');
 const templateCard = document.getElementById('template-card').content;
 const fragment = document.createDocumentFragment();
 
 document.addEventListener('DOMContentLoaded', ()=>{
     obtenerData();
+    obtenerCategorias();
 });
 
 items.addEventListener('click', e=>{
@@ -30,6 +32,37 @@ const obtenerProducto = async id =>{
     }
 }
 
+const obtenerProductoPorCategoria = async id =>{
+    try{
+        const res = await fetch('https://test-api-bsale.herokuapp.com/api/Product/Category/'+id);
+        const data = await res.json();
+        limpiarPantalla();
+        pintarCards(data);
+    }catch (error){
+        console.log(error);
+    }
+}
+
+const obtenerCategorias = async () =>{
+    try{
+        const res = await fetch('https://test-api-bsale.herokuapp.com/api/Category');
+        const data = await res.json();
+        pintarCategorias(data);
+    } catch (error){
+        console.log(error);
+    }
+}
+
+const filtrarPorCategoria = async id =>{
+    try{
+        const res = await fetch('https://test-api-bsale.herokuapp.com/api/Category/'+id);
+        const data = await res.json();
+        pintarCategorias(data);
+    } catch (error){
+        console.log(error);
+    }
+}
+
 //buscar por palabra
 const resultadoBusqueda = async busqueda =>{
     try{
@@ -40,9 +73,6 @@ const resultadoBusqueda = async busqueda =>{
         console.log(error);
     }    
 }
-//buscar por categoria
-
-//buscar por 
 
 const pintarCards = data => {
     data.forEach(producto => {
@@ -72,6 +102,29 @@ const pintarCards = data => {
         fragment.appendChild(clone);
     });
     items.appendChild(fragment);
+}
+
+const pintarCategorias = data =>{
+    data.forEach(categoria =>{
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.classList = 'dropdown-item';
+        a.innerText = categoria.name;
+        a.addEventListener('click', ()=>{
+            obtenerProductoPorCategoria(categoria.id);
+        });
+        li.appendChild(a);
+        categorias.appendChild(li);
+    });
+
+}
+
+const limpiarPantalla = () =>{
+    try{
+        items.innerHTML = '';
+    }catch (error){
+        console.log(error);
+    }
 }
 
 const addCarrito = e =>{
