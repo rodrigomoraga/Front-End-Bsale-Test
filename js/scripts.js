@@ -2,6 +2,7 @@ const items = document.getElementById('items');
 const categorias = document.getElementById('categorias');
 const templateCard = document.getElementById('template-card').content;
 const fragment = document.createDocumentFragment();
+const buscador = document.getElementById('buscador');
 
 document.addEventListener('DOMContentLoaded', ()=>{
     obtenerData();
@@ -12,10 +13,23 @@ items.addEventListener('click', e=>{
     addCarrito(e);
 });
 
+buscador.addEventListener('submit', event =>{
+    event.preventDefault();
+    var input = document.getElementById('inputBuscador').value;
+    if (input) {
+        buscadorPorPalabra(input);    
+    }
+    else{
+        obtenerData();
+    }
+    
+});
+
 const obtenerData = async () => {
     try{
         const res = await fetch('https://test-api-bsale.herokuapp.com/api/Product');
-        const data = await res.json();        
+        const data = await res.json();
+        limpiarPantalla();        
         pintarCards(data);
     }catch (error){
         console.log(error);
@@ -64,11 +78,12 @@ const filtrarPorCategoria = async id =>{
 }
 
 //buscar por palabra
-const resultadoBusqueda = async busqueda =>{
+const buscadorPorPalabra = async busqueda =>{
     try{
-        const res = await fetch('https://test-api-bsale.herokuapp.com/api/Product/'+busqueda);
+        const res = await fetch('https://test-api-bsale.herokuapp.com/api/Product/Search/'+busqueda);
         const data = await res.json();
-        console.log(data);
+        limpiarPantalla();
+        pintarCards(data);
     }catch(error){
         console.log(error);
     }    
