@@ -3,9 +3,11 @@ const categorias = document.getElementById('categorias');
 const templateCard = document.getElementById('template-card').content;
 const fragment = document.createDocumentFragment();
 const buscador = document.getElementById('buscador');
+var carrito = {};
 
 document.addEventListener('DOMContentLoaded', ()=>{
-    obtenerData();
+    //obtenerData();
+    obtenerProductoPorCategoria(1);
     obtenerCategorias();
 });
 
@@ -21,8 +23,7 @@ buscador.addEventListener('submit', event =>{
     }
     else{
         obtenerData();
-    }
-    
+    } 
 });
 
 const obtenerData = async () => {
@@ -99,18 +100,18 @@ const pintarCards = data => {
             templateCard.querySelector('img').setAttribute('src', 'https://programacion.net/files/article/20161110041116_image-not-found.png');
         }        
         templateCard.querySelector('img').setAttribute('alt', producto.name);
-        /*
-        if(producto.discount != '0'){
-            //REVISAR ESTO            
-            templateCard.querySelector('p').classList = "text-decoration-line-through";            
-            var precio = producto.price * (100 - producto.discount)/100;
-            templateCard.querySelector('span').textContent = precio;
+        templateCard.querySelector('p').textContent = "$" + producto.price;
+
+        if(producto.discount == '0'){                                                
+            
+            templateCard.querySelector('p').classList = "";       
+            templateCard.querySelector('span').textContent = "";     
         }
-        else{
-            templateCard.querySelector('p').textContent = producto.price;
-        }
-        */
-        templateCard.querySelector('p').textContent = producto.price;
+        else{                      
+            var precioDescuento = producto.price * (100 - producto.discount)/100;            
+            templateCard.querySelector('p').classList = "text-decoration-line-through";
+            templateCard.querySelector('span').textContent = "Precio Descuento: $" + precioDescuento;                            
+        }    
         templateCard.querySelector('button').dataset.id = producto.id;
 
         const clone = templateCard.cloneNode(true);
@@ -144,7 +145,8 @@ const limpiarPantalla = () =>{
 
 const addCarrito = e =>{
     if(e.target.classList.contains('btn-outline-dark')){
-        console.log(obtenerProducto(e.target.dataset.id));
+        const objeto = obtenerProducto(e.target.dataset.id);
+
     }
     e.stopPropagation();
 }
