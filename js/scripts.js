@@ -2,6 +2,7 @@ const items = document.getElementById('items');
 const itemsCarrito = document.getElementById('items-carrito');
 const footer = document.getElementById('footer');
 const categorias = document.getElementById('categorias');
+const categoriasMenu = document.getElementById('categorias-menu');
 const templateCard = document.getElementById('template-card').content;
 const templateCarrito = document.getElementById('template-carrito').content;
 const templateFooter = document.getElementById('template-footer').content;
@@ -160,7 +161,6 @@ const limpiarPantalla = () =>{
 
 const addCarrito = e =>{
     if(e.target.classList.contains('btn-outline-dark')){
-        //const objeto = obtenerProducto(e.target.dataset.id);
         const producto = {
             id: e.target.dataset.id,
             name: e.target.dataset.name,
@@ -171,9 +171,8 @@ const addCarrito = e =>{
         if (carrito.hasOwnProperty(producto.id)) {
             producto.cantidad = carrito[producto.id].cantidad + 1;
         }
-        carrito[producto.id] = {...producto}
+        carrito[producto.id] = {...producto}        
         pintarCarrito();
-        //console.log(carrito);
     }
     e.stopPropagation();
 }
@@ -217,10 +216,13 @@ const pintarFooter = () => {
     fragment.appendChild(clone);
     footer.appendChild(fragment);
 
+    carritoMenu.querySelector('span').textContent = nCantidad;
+
     const btnVaciar = document.getElementById('vaciar-carrito');
     btnVaciar.addEventListener('click', () =>{
         carrito = {};
         pintarCarrito();
+        carritoMenu.querySelector('span').textContent = 0;
     })
 }
 
