@@ -9,6 +9,7 @@ const templateFooter = document.getElementById('template-footer').content;
 const buscador = document.getElementById('buscador');
 const carritoMenu = document.getElementById('carrito-menu');
 const fragment = document.createDocumentFragment();
+const dominio = 'https://test-api-bsale.herokuapp.com';
 var carrito = {};
 
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -41,7 +42,7 @@ itemsCarrito.addEventListener('click', e => {
 
 const obtenerData = async () => {
     try{
-        const res = await fetch('https://test-api-bsale.herokuapp.com/api/Product');
+        const res = await fetch(dominio + '/api/Product');
         const data = await res.json();
         limpiarPantalla();        
         pintarCards(data);
@@ -52,7 +53,7 @@ const obtenerData = async () => {
 
 const obtenerProducto = async id =>{
     try{
-        const res = await fetch('https://test-api-bsale.herokuapp.com/api/Product/'+id);
+        const res = await fetch(dominio + '/api/Product/'+id);
         const data = await res.json();
     }catch (error){
         console.log(error);
@@ -61,7 +62,7 @@ const obtenerProducto = async id =>{
 
 const obtenerProductoPorCategoria = async id =>{
     try{
-        const res = await fetch('https://test-api-bsale.herokuapp.com/api/Product/Category/'+id);
+        const res = await fetch(dominio + '/api/Product/Category/'+id);
         const data = await res.json();
         limpiarPantalla();
         pintarCards(data);
@@ -72,7 +73,7 @@ const obtenerProductoPorCategoria = async id =>{
 
 const obtenerCategorias = async () =>{
     try{
-        const res = await fetch('https://test-api-bsale.herokuapp.com/api/Category');
+        const res = await fetch(dominio + '/api/Category');
         const data = await res.json();
         pintarCategorias(data);
     } catch (error){
@@ -82,7 +83,7 @@ const obtenerCategorias = async () =>{
 
 const filtrarPorCategoria = async id =>{
     try{
-        const res = await fetch('https://test-api-bsale.herokuapp.com/api/Category/'+id);
+        const res = await fetch(dominio + '/api/Category/'+id);
         const data = await res.json();
         pintarCategorias(data);
     } catch (error){
@@ -93,7 +94,7 @@ const filtrarPorCategoria = async id =>{
 //buscar por palabra
 const buscadorPorPalabra = async busqueda =>{
     try{
-        const res = await fetch('https://test-api-bsale.herokuapp.com/api/Product/Search/'+busqueda);
+        const res = await fetch(dominio + '/api/Product/Search/'+busqueda);
         const data = await res.json();
         limpiarPantalla();
         pintarCards(data);
